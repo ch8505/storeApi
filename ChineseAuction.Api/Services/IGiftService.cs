@@ -4,7 +4,7 @@ namespace ChineseAuction.Api.Services
 {
     public interface IGiftService
     {
-        Task<int> AddToDonorAsync(int donorId, GiftCreateUpdateDto dto);
+        Task<int> AddToDonorAsync(int donorId, GiftCreateUpdateDto dto, string? imagePath);
         Task<bool> DeleteAsync(int id);
         Task<IEnumerable<GiftAdminDto>> GetAllForAdminAsync();
         Task<IEnumerable<GiftDto>> GetAllForBuyersAsync();
@@ -13,5 +13,6 @@ namespace ChineseAuction.Api.Services
         Task<GiftDetailDto?> GetByIdAsync(int id);
         Task<IEnumerable<GiftDto>> SearchAsync(string? name, string? donor, int? minPurchasers);
         Task<bool> UpdateAsync(int id, GiftCreateUpdateDto dto);
+
     }
 }

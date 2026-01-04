@@ -105,6 +105,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<ILotteryRepository, LotteryRepository>();
 builder.Services.AddScoped<ILotteryService, LotteryService>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -177,6 +178,8 @@ app.UseRateLimiting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseStaticFiles();
 
 app.MapControllers();
 
