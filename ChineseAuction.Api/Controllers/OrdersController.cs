@@ -154,6 +154,21 @@ namespace ChineseAuction.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// מחיקת מוצר מסל הקניות (רק כאשר ההזמנה בסטטוס טיוטה)
+        /// </summary>
+        [HttpDelete("{orderId}/items/{orderItemId}")]
+        public async Task<IActionResult> DeleteOrderItem(int orderId, int orderItemId)
+        {
+            var userId = GetUserIdFromToken();
+            var success = await _orderService.DeleteOrderItemAsync(orderId, orderItemId, userId);
+
+            if (!success)
+                return NotFound(new { message = "המוצר לא נמצא בהזמנה או שההזמנה אינה בסטטוס טיוטה" });
+
+            return NoContent();
+        }
+
         // פונקציית עזר לשליפת ה-ID מהטוקן
         private int GetUserIdFromToken()
         {

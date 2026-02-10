@@ -161,5 +161,17 @@ namespace ChineseAuction.Api.Services
             return await _orderRepo.DeleteAsync(orderId);
         }
 
+        // מחיקת פריט מהזמנה
+        public async Task<bool> DeleteOrderItemAsync(int orderId, int orderItemId, int userId)
+        {
+            // שליפת ההזמנה ובדיקת בעלות וסטטוס
+            var order = await _orderRepo.GetByIdAsync(orderId);
+
+            if (order == null || order.UserId != userId || order.Status != Status.IsDraft)
+                return false;
+
+            // מחיקת המוצר מההזמנה
+            return await _orderRepo.DeleteOrderItemAsync(orderId, orderItemId);
+        }
     }
 }

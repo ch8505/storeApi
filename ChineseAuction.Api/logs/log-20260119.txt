@@ -1,0 +1,2 @@
+2026-01-19 12:26:48.722 [WRN] No store type was specified for the decimal property 'TotalAmount' on entity type 'Order'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-01-19 12:44:08.058 [WRN] Login attempt failed: User not found for email e0548571666@gmail.com

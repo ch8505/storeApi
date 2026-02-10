@@ -133,7 +133,7 @@ namespace ChineseAuction.Api.Controllers
             string imagePath = _fileService.SaveFile(giftDto.ImageUrl);
 
             // 2. יוצרים את האובייקט לשמירה ב-DB (כאן ה-ImageUrl הוא string!)
-            var gift = new Gift
+            var gift = new Gift 
             {
                 Name = giftDto.Name,
                 TicketPrice = giftDto.TicketPrice,

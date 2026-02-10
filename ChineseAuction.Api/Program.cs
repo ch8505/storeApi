@@ -1,4 +1,4 @@
-using ChineseAuction.Api.Data;
+ï»¿using ChineseAuction.Api.Data;
 using ChineseAuction.Api.Mappings;
 using ChineseAuction.Api.Middleware;
 using ChineseAuction.Api.Repositories;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Serilog; 
+using Serilog;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -84,7 +84,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     ));
 
 // =======================
-// DI – Repositories & Services
+// DI â€“ Repositories & Services
 // =======================
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -151,6 +151,18 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+
+// =======================
+// Cors
+// =======================
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Allowspecificorigin", policy =>
+      policy.WithOrigins("http://localhost:4200")
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+});
+
 // =======================
 // Build App
 // =======================
@@ -167,14 +179,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//äèéôåì áùâéàåú
+//Ã¤Ã¨Ã©Ã´Ã¥Ã¬ Ã¡Ã¹Ã¢Ã©Ã Ã¥Ãº
 app.UseExceptionHandling();
 
-// øéùåí á÷ùåú
+// Ã¸Ã©Ã¹Ã¥Ã­ Ã¡Ã·Ã¹Ã¥Ãº
 app.UseRequestLogging();
 
-// äâáìú ÷öá á÷ùåú
+// Ã¤Ã¢Ã¡Ã¬Ãº Ã·Ã¶Ã¡ Ã¡Ã·Ã¹Ã¥Ãº
 app.UseRateLimiting();
+
+app.UseCors("Allowspecificorigin");
 
 app.UseAuthentication();
 app.UseAuthorization();

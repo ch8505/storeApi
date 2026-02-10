@@ -54,30 +54,6 @@ namespace ChineseAuction.Api.Services
             return _mapper.Map<UserResponseDto>(createdUser);
         }
 
-        // עדכון משתמש קיים
-        //public async Task<UserResponseDto?> UpdateUserAsync(int id, UserUpdateDto updateDto)
-        //{
-        //    var existingUser = await _userRepository.GetByIdAsync(id);
-        //    if (existingUser == null) return null;
-
-        //    if (updateDto.Email != null && updateDto.Email != existingUser.Email)
-        //    {
-        //        if (await _userRepository.EmailExistsAsync(updateDto.Email))
-        //            throw new ArgumentException($"Email {updateDto.Email} is already registered.");
-        //    }
-
-        //    _mapper.Map(updateDto, existingUser);
-
-        //    var updatedUser = await _userRepository.UpdateAsync(existingUser);
-        //    return updatedUser == null ? null : _mapper.Map<UserResponseDto>(updatedUser);
-        //}
-
-
-        // מחיקת משתמש לפי מזהה
-        //public async Task<bool> DeleteUserAsync(int id)
-        //{
-        //    return await _userRepository.DeleteAsync(id);
-        //}
 
         public async Task<LoginResponseDto?> AuthenticateAsync(string email, string password)
         {

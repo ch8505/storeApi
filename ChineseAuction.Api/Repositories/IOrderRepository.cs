@@ -11,7 +11,7 @@ namespace ChineseAuction.Api.Repositories
         Task<IEnumerable<Order>> GetByUserIdAsync(int userId);
         Task UpdateAsync(Order order);
         Task<bool> DeleteAsync(int id);
-
         Task<IEnumerable<Order>> GetByGiftIdAsync(int giftId);
+        Task<bool> DeleteOrderItemAsync(int orderId, int orderItemId);
     }
 }
