@@ -42,7 +42,22 @@ namespace ChineseAuction.Api.Services
             return _mapper.Map<IEnumerable<OrderResponseDto>>(orders);
         }
 
-         public   async Task<IEnumerable<GiftPurchasesDto>> GetByGiftIdAsync(int giftId)
+        // קבל את ההזמנה האחרונה שהיא טיוטה עבור משתמש מסוים
+        public async Task<OrderResponseDto?> GetLatestDraftOrderAsync(int userId)
+        {
+            var orders = await _orderRepo.GetByUserIdAsync(userId);
+
+            // מוצאים את ההזמנה האחרונה שהיא עדיין בסטטוס טיוטה
+            var latestDraft = orders
+                .Where(o => o.Status == Status.IsDraft)
+                .OrderByDescending(o => o.OrderDate)
+                .FirstOrDefault();
+
+            return _mapper.Map<OrderResponseDto?>(latestDraft);
+        }
+
+        //לקבל את כל המשתמשים שקנו כרטיס למתנה מסוימת לפי id  
+        public async Task<IEnumerable<GiftPurchasesDto>> GetByGiftIdAsync(int giftId)
         {
             var allOrders = await _orderRepo.GetByGiftIdAsync(giftId);
             var confirmedOrders = allOrders.Where(o => o.Status == Status.IsConfirmed);
@@ -64,6 +79,7 @@ namespace ChineseAuction.Api.Services
 
         }
 
+        //
         public async Task<IEnumerable<GiftPurchasesDto>> GetPurchasesByGiftsAsync()
         {
             // 1. שליפת כל ההזמנות המאושרות בלבד (כי טיוטות לא נחשבות רכישה)

@@ -16,25 +16,25 @@ namespace ChineseAuction.Api.Services
             _mapper = mapper;
         }
 
-        /// <summary>שליפת כל המתנות לרוכשים (מידע בסיסי)</summary>
-        public async Task<IEnumerable<GiftDto>> GetAllForBuyersAsync()
+        /// <summary>שליפת כל המתנות לרוכשים (מידע מפורט )</summary>
+        public async Task<IEnumerable<GiftDetailDto>> GetAllForBuyersAsync()
         {
             var gifts = await _repo.GetAllAsync();
-            return _mapper.Map<IEnumerable<GiftDto>>(gifts);
+            return _mapper.Map<IEnumerable<GiftDetailDto>>(gifts);
         }
 
         /// <summary>מיון מתנות לפי מחיר כרטיס</summary>
-        public async Task<IEnumerable<GiftDto>> GetAllSortedByPriceAsync(bool ascending)
+        public async Task<IEnumerable<GiftDetailDto>> GetAllSortedByPriceAsync(bool ascending)
         {
             var gifts = await _repo.GetAllSortedByPriceAsync(ascending);
-            return _mapper.Map<IEnumerable<GiftDto>>(gifts);
+            return _mapper.Map<IEnumerable<GiftDetailDto>>(gifts);
         }
 
         /// <summary>מיון מתנות לפי שם הקטגוריה</summary>
-        public async Task<IEnumerable<GiftDto>> GetAllSortedByCategoryAsync()
+        public async Task<IEnumerable<GiftDetailDto>> GetAllSortedByCategoryAsync()
         {
             var gifts = await _repo.GetAllSortedByCategoryAsync();
-            return _mapper.Map<IEnumerable<GiftDto>>(gifts);
+            return _mapper.Map<IEnumerable<GiftDetailDto>>(gifts);
         }
 
         /// <summary>צפייה מנהלית מורחבת כולל נתוני מכירות ותורמים</summary>

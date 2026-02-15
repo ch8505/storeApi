@@ -40,12 +40,14 @@ namespace ChineseAuction.Api.Dtos
         public string? CategoryName { get; set; }
         public int? DonorId { get; set; }
         public string? DonorName { get; set; }
-        public string? DonorEmail { get; set; }
+       
     }
 
     // DTO למנהל - מוסיף רק את מה שצריך לניהול (כמו כמות רוכשים)
     public class GiftAdminDto : GiftDetailDto
+
     {
+        public string? DonorEmail { get; set; }
         public int PurchasersCount { get; set; }
     }
 

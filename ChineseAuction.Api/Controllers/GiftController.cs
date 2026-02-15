@@ -18,17 +18,17 @@ namespace ChineseAuction.Api.Controllers
 
         //מחזיר את כל המתנות הזמינות לרוכשים 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GiftDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<GiftDetailDto>>> GetAll()
             => Ok(await _service.GetAllForBuyersAsync());
 
         //מיון מתנות לפי מחיר כרטיס
         [HttpGet("sort-by-price")]
-        public async Task<ActionResult<IEnumerable<GiftDto>>> GetByPrice([FromQuery] bool asc = true)
+        public async Task<ActionResult<IEnumerable<GiftDetailDto>>> GetByPrice([FromQuery] bool asc = true)
             => Ok(await _service.GetAllSortedByPriceAsync(asc));
 
         //מיון מתנות לפי קטגוריה
         [HttpGet("sort-by-category")]
-        public async Task<ActionResult<IEnumerable<GiftDto>>> GetByCategory()
+        public async Task<ActionResult<IEnumerable<GiftDetailDto>>> GetByCategory()
             => Ok(await _service.GetAllSortedByCategoryAsync());
 
         //מחזיר מתנה לפי Id עם כל הפרטים

@@ -61,15 +61,15 @@ namespace ChineseAuction.Api.Controllers
         /// עבור לקוח: צפייה בסל האישי שלו (טיוטות בלבד)
         /// </summary>
         [HttpGet("my-cart")]
-        public async Task<ActionResult<IEnumerable<OrderResponseDto>>> GetMyCart()
+        public async Task<ActionResult<OrderResponseDto>> GetMyCart()
         {
-            // שליפת ה-ID ישירות מהטוקן בצורה מאובטחת
             var userId = GetUserIdFromToken();
-            var orders = await _orderService.GetOrdersByUserIdAsync(userId);
+            // שינוי כאן: אנחנו קוראים למתודה שמחזירה אובייקט בודד
+            var cart = await _orderService.GetLatestDraftOrderAsync(userId);
 
-            // לקוח רואה רק מה שעדיין לא שולם
-            var cartItems = orders.Where(o => o.Status == "IsDraft");
-            return Ok(cartItems);
+            if (cart == null) return NotFound(new { message = "העגלה ריקה" });
+
+            return Ok(cart);
         }
 
 
@@ -94,6 +94,7 @@ namespace ChineseAuction.Api.Controllers
         //    var orders = await _orderService.GetOrdersByUserIdAsync(userId);
         //    return Ok(orders);
         //}
+
 
         /// <summary>
         /// יצירת הזמנה חדשה או עדכון סל קיים

@@ -5,6 +5,7 @@ using ChineseAuction.Api.Repositories;
 using ChineseAuction.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog; 
@@ -151,6 +152,18 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 // =======================
+// Cors
+// =======================
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Allowspecificorigin", policy =>
+      policy.WithOrigins("http://localhost:4200")
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+    });
+
+
+// =======================
 // Build App
 // =======================
 var app = builder.Build();
@@ -164,6 +177,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
 
 //הטיפול בשגיאות
@@ -175,8 +189,11 @@ app.UseRequestLogging();
 // הגבלת קצב בקשות
 app.UseRateLimiting();
 
+app.UseCors("Allowspecificorigin");
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

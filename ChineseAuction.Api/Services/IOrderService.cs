@@ -1,5 +1,4 @@
 ﻿using ChineseAuction.Api.Dtos;
-using ChineseAuction.Api.Models;
 
 namespace ChineseAuction.Api.Services
 {
@@ -9,10 +8,10 @@ namespace ChineseAuction.Api.Services
         Task<OrderResponseDto> CreateOrderAsync(OrderCreateDto dto);
         Task<bool> DeleteOrderAsync(int orderId, int userId);
         Task<IEnumerable<OrderResponseDto>> GetAllOrdersAsync();
+        Task<IEnumerable<GiftPurchasesDto>> GetByGiftIdAsync(int giftId);
+        Task<OrderResponseDto?> GetLatestDraftOrderAsync(int userId);
         Task<OrderResponseDto?> GetOrderByIdAsync(int id);
         Task<IEnumerable<OrderResponseDto>> GetOrdersByUserIdAsync(int userId);
         Task<IEnumerable<GiftPurchasesDto>> GetPurchasesByGiftsAsync();
-
-        Task<IEnumerable<GiftPurchasesDto>> GetByGiftIdAsync(int giftId);
     }
 }

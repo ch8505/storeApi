@@ -15,14 +15,15 @@ namespace ChineseAuction.Api.Mappings
             // אבל כדאי להגדיר זאת מפורשות אם השמות שונים במעט.
             CreateMap<Gift, GiftDetailDto>()
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : null))
-                .ForMember(dest => dest.DonorName, opt => opt.MapFrom(src => src.Donor != null ? src.Donor.Name : null))
-                .ForMember(dest => dest.DonorEmail, opt => opt.MapFrom(src => src.Donor != null ? src.Donor.Email : null));
+                .ForMember(dest => dest.DonorName, opt => opt.MapFrom(src => src.Donor != null ? src.Donor.Name : null));
+                
 
             // 3. מיפוי למנהל - כולל חישוב כמות רוכשים מהרשימה OrderItems
             CreateMap<Gift, GiftAdminDto>()
                  .IncludeBase<Gift, GiftDetailDto>()
                  .ForMember(dest => dest.PurchasersCount,
-                   opt => opt.MapFrom(src => src.OrderItems != null ? src.OrderItems.Sum(oi => oi.Quantity) : 0));
+                   opt => opt.MapFrom(src => src.OrderItems != null ? src.OrderItems.Sum(oi => oi.Quantity) : 0))
+                 .ForMember(dest => dest.DonorEmail, opt => opt.MapFrom(src => src.Donor != null ? src.Donor.Email : null));
 
             // 4. מיפוי מה-DTO ל-Entity (כתיבה/עדכון)
             CreateMap<GiftCreateUpdateDto, Gift>()
