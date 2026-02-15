@@ -93,19 +93,24 @@ namespace ChineseAuction.Api.Repositories
             return true;
         }
 
+        //מחק פריט הזמנה לפי מזהה הזמנה ומזהה פריט הזמנה
+        public async Task<bool> DeleteOrderItemAsync(int orderId, int orderItemId)
+        {
+            var orderItem = await _context.OrderItems
+                .FirstOrDefaultAsync(oi => oi.OrderId == orderId && oi.Id == orderItemId);
+
+            if (orderItem == null)
+                return false;
+
+            _context.OrderItems.Remove(orderItem);
+            await _context.SaveChangesAsync();
+            return true;
+        }
 
         //בדוק אם הזמנה קיימת לפי id
         public async Task<bool> ExistsAsync(int id)
         {
             return await _context.Orders.AnyAsync(o => o.Id == id);
         }
-
-
-
-
-
-
-
-
     }
 }

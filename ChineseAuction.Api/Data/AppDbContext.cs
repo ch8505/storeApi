@@ -13,7 +13,7 @@ namespace ChineseAuction.Api.Data
         public DbSet<Donor> Donors => Set<Donor>();
         public DbSet<Gift> Gifts => Set<Gift>();
         public DbSet<Order> Orders => Set<Order>();
-        public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+        public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Winner> Winners => Set<Winner>();
 
         // public DbSet<Manager> Managers { get; set; } //  לצורך התחברות הנהלה

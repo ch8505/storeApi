@@ -13,5 +13,7 @@ namespace ChineseAuction.Api.Services
         Task<OrderResponseDto?> GetOrderByIdAsync(int id);
         Task<IEnumerable<OrderResponseDto>> GetOrdersByUserIdAsync(int userId);
         Task<IEnumerable<GiftPurchasesDto>> GetPurchasesByGiftsAsync();
+        Task<IEnumerable<GiftPurchasesDto>> GetByGiftIdAsync(int giftId);
+        Task<bool> DeleteOrderItemAsync(int orderId, int orderItemId, int userId);
     }
 }

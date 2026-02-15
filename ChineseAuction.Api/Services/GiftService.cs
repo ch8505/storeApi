@@ -66,13 +66,21 @@ namespace ChineseAuction.Api.Services
         //}
 
         /// <summary>יצירת מתנה חדשה לתורם קיים</summary>
-        public async Task<int> AddToDonorAsync(int donorId, GiftCreateUpdateDto dto)
+        public async Task<int> AddToDonorAsync(int donorId, GiftCreateUpdateDto dto, string? imagePath)
         {
+           
             if (!await _repo.DonorExistsAsync(donorId))
                 throw new KeyNotFoundException("התורם המבוקש לא נמצא במערכת");
 
             var gift = _mapper.Map<Gift>(dto);
+
             gift.DonorId = donorId;
+            gift.ImageUrl = imagePath; // השמת הנתיב שנשמר ב-wwwroot
+
+            // פתרון שגיאת Identity: משתמשים ב-ID בלבד ולא באובייקט מלא
+            gift.CategoryId = (int)dto.CategoryId;
+            gift.Category = null;
+
             return await _repo.CreateAsync(gift);
         }
 

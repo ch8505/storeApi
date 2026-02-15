@@ -26,10 +26,11 @@ namespace ChineseAuction.Api.Dtos
         [Range(0.1, 10000.0)]
         public new decimal TicketPrice { get; set; }
 
-        public string? ImageUrl { get; set; }
+        public IFormFile? ImageUrl { get; set; }
         public int? CategoryId { get; set; }
        // public int? DonorId { get; set; }
     }
+  
 
     // DTO מפורט - יורש מ-GiftDto ומוסיף פרטי תורם וקטגוריה
     public class GiftDetailDto : GiftDto
@@ -65,4 +66,6 @@ namespace ChineseAuction.Api.Dtos
         public string Email { get; set; } = string.Empty;
         public int Quantity { get; set; } // כמה כרטיסים המשתמש הספציפי קנה
     }
+
+
 }

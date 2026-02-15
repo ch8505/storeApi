@@ -16,13 +16,13 @@ namespace ChineseAuction.Api.Dtos
     {
         [Required]
         public int GiftId { get; set; }
-        [Range(1, 100)]
+        //[Range(1, 100)]
         public int Quantity { get; set; } = 1;
     }
 
     public class OrderResponseDto
     {
-        //public int Id { get; set; }
+        public int Id { get; set; }
         public int UserId { get; set; }
         public string UserName { get; set; } = string.Empty;
         public decimal TotalAmount { get; set; }
@@ -33,7 +33,9 @@ namespace ChineseAuction.Api.Dtos
 
     public class OrderItemResponseDto
     {
-        //public int GiftId { get; set; }
+        public int Id { get; set; }
+
+        public int giftId { get; set; }
         public string GiftName { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; } // הוספנו מחיר ליחידה בנפרד
