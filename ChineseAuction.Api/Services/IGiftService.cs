@@ -12,7 +12,6 @@ namespace ChineseAuction.Api.Services
         Task<IEnumerable<GiftDetailDto>> GetAllSortedByPriceAsync(bool ascending);
         Task<GiftDetailDto?> GetByIdAsync(int id);
         Task<IEnumerable<GiftDto>> SearchAsync(string? name, string? donor, int? minPurchasers);
-        Task<bool> UpdateAsync(int id, GiftCreateUpdateDto dto);
-
+        Task<bool> UpdateAsync(int id, GiftCreateUpdateDto dto, string? imagePath);
     }
 }

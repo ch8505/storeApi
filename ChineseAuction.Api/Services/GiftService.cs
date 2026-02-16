@@ -68,7 +68,7 @@ namespace ChineseAuction.Api.Services
         /// <summary>יצירת מתנה חדשה לתורם קיים</summary>
         public async Task<int> AddToDonorAsync(int donorId, GiftCreateUpdateDto dto, string? imagePath)
         {
-           
+
             if (!await _repo.DonorExistsAsync(donorId))
                 throw new KeyNotFoundException("התורם המבוקש לא נמצא במערכת");
 
@@ -84,16 +84,35 @@ namespace ChineseAuction.Api.Services
             return await _repo.CreateAsync(gift);
         }
 
-        /// <summary>עדכון פרטי מתנה קיימת</summary>
-        public async Task<bool> UpdateAsync(int id, GiftCreateUpdateDto dto)
+        /// <summary>עדכון פרטי מתנה קיימת כולל תמונה</summary>
+        public async Task<bool> UpdateAsync(int id, GiftCreateUpdateDto dto, string? imagePath)
         {
+            //  שליפת המתנה הקיימת מהמסד
             var existing = await _repo.GetByIdTrackedAsync(id);
             if (existing == null) return false;
 
+            //. מיפוי אוטומטי של שדות פשוטים (Name, TicketPrice, Description)
+            // ה-Mapper ידלג על ImageUrl ו-Category כי הגדרנו לו Ignore ב-Profile
             _mapper.Map(dto, existing);
+
+            // עדכון ה-ID של הקטגוריה וניתוק האובייקט (למניעת שגיאת Identity)
+            if (dto.CategoryId.HasValue)
+            {
+                existing.CategoryId = dto.CategoryId.Value;
+                existing.Category = null;
+            }
+
+            // עדכון התמונה - רק אם הועלתה תמונה חדשה
+            if (!string.IsNullOrEmpty(imagePath))
+            {
+                existing.ImageUrl = imagePath;
+            }
+
+            // שמירה
             await _repo.SaveChangesAsync();
             return true;
         }
+
 
         /// <summary>מחיקת מתנה מהמערכת</summary>
         public async Task<bool> DeleteAsync(int id) => await _repo.DeleteAsync(id);

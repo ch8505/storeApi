@@ -18,11 +18,11 @@ namespace ChineseAuction.Api.Controllers
 
 
 
-        public GiftController(IGiftService service, IFileService fileService,AppDbContext context)
+        public GiftController(IGiftService service, IFileService fileService, AppDbContext context)
         {
             _service = service;
             _fileService = fileService;
-            _context = context; 
+            _context = context;
         }
 
         //מחזיר את כל המתנות הזמינות לרוכשים 
@@ -63,28 +63,8 @@ namespace ChineseAuction.Api.Controllers
         public async Task<ActionResult<IEnumerable<GiftAdminDto>>> GetAllForAdmin()
             => Ok(await _service.GetAllForAdminAsync());
 
-        //// יצירת מתנה חדשה
-        //[HttpPost]
-        //[Authorize(Roles = "Admin")]
-        //public async Task<ActionResult<int>> Create([FromBody] GiftCreateUpdateDto dto)
-        //{
-        //    var id = await _service.CreateAsync(dto);
-        //    return CreatedAtAction(nameof(GetById), new { id }, id);
-        //}
-
 
         // הוספת מתנה חדשה לתורם קיים
-        //[HttpPost("admin/add-to-donor/{donorId:int}")]
-        //[Authorize(Roles = "Admin")]
-        //public async Task<ActionResult<int>> AddToDonor(int donorId, [FromBody] GiftCreateUpdateDto dto)
-        //{
-        //    var id = await _service.AddToDonorAsync(donorId, dto);
-        //    return CreatedAtAction(nameof(GetById), new { id }, id);
-
-
-        //}
-
-        // ChineseAuction.Api/Controllers/GiftController.cs
         [HttpPost("admin/add-to-donor/{donorId:int}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<int>> AddToDonor(int donorId, [FromForm] GiftCreateUpdateDto dto)
@@ -107,13 +87,32 @@ namespace ChineseAuction.Api.Controllers
                 return NotFound(ex.Message);
             }
         }
-        // עדכון מתנה קיימת
+
+
+        // עדכון מתנה קיימת - כולל תמיכה בתמונות
         [HttpPut("{id:int}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update(int id, [FromBody] GiftCreateUpdateDto dto)
+        public async Task<IActionResult> Update(int id, [FromForm] GiftCreateUpdateDto dto) // שינוי ל-[FromForm]
         {
-            var success = await _service.UpdateAsync(id, dto);
-            return success ? NoContent() : NotFound();
+            try
+            {
+                string? imagePath = null;
+
+                // אם המשתמש העלה תמונה חדשה בעדכון
+                if (dto.ImageUrl != null)
+                {
+                    imagePath = _fileService.SaveFile(dto.ImageUrl);
+                }
+
+                // שליחה לסרוויס עם נתיב התמונה החדש (אם יש)
+                var success = await _service.UpdateAsync(id, dto, imagePath);
+
+                return success ? NoContent() : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // מחיקת מתנה לפי Id
@@ -125,6 +124,7 @@ namespace ChineseAuction.Api.Controllers
             return success ? NoContent() : NotFound();
         }
 
+
         [HttpPost("admin/add-image")]
         [Authorize(Roles = "Admin")] // הגנה על ה-Action [cite: 13]
         public async Task<IActionResult> AddGift([FromForm] GiftCreateUpdateDto giftDto)
@@ -133,7 +133,7 @@ namespace ChineseAuction.Api.Controllers
             string imagePath = _fileService.SaveFile(giftDto.ImageUrl);
 
             // 2. יוצרים את האובייקט לשמירה ב-DB (כאן ה-ImageUrl הוא string!)
-            var gift = new Gift 
+            var gift = new Gift
             {
                 Name = giftDto.Name,
                 TicketPrice = giftDto.TicketPrice,
@@ -147,5 +147,5 @@ namespace ChineseAuction.Api.Controllers
             return Ok(gift);
         }
     }
-     
+
 }

@@ -114,6 +114,8 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddAutoMapper(typeof(UserProfile));
 builder.Services.AddAutoMapper(typeof(DonorProfile));
 
+builder.Services.AddHttpClient<IAiService, OpenAiService>();
+
 // =======================
 // JWT Authentication
 // =======================
